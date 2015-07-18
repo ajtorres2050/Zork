@@ -47,7 +47,7 @@ $(document).ready(function(){
 		}
 
 		if (itemlist.length === 1) {
-			output.before("There is a " + itemlist[0] + " here.");
+			output.before("There is a " + itemlist[0] + " here.<br />");
 		}
 		else if (itemlist.length > 1) {
 			var str = "";
@@ -59,7 +59,7 @@ $(document).ready(function(){
 					str.concat(itemlist[i] + ", ");
 				}
 			}
-			output.before("There is a " + str + " here.");
+			output.before("There is a " + str + " here.<br />");
 		}
 	}
 
