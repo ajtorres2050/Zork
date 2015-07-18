@@ -1,0 +1,60 @@
+div {
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	font-family: "Courier New", Courier, monospace;
+}
+
+input {
+	background-color: #090909;
+	color: #d3d3d3;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 12pt;
+	border: 0px;
+	width: 600px;
+}
+
+input:focus {
+	outline:0;
+}
+
+.content {
+	position: absolute;
+	bottom: 0px;
+}
+
+.commandline {
+	padding: 0 0 0 0;
+}
+
+.screen {
+	background-color: #090909;
+	color: #d3d3d3;
+	width: 800px;
+	height:600px;
+	border-radius: 0 0 10px 10px;
+	position:relative;
+}
+
+.scorebar {
+	background-color: #d3d3d3;
+	color: #090909;
+	width: 800px;
+	height: 25px;
+	border-radius: 10px 10px 0 0;
+}
+
+.room {
+	display:inline-block;
+}
+
+.score {
+	display:inline-block;
+	float:right;
+}
+
+.moves {
+	display:inline-block;
+	float:right;
+}
