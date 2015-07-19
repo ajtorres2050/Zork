@@ -1,5 +1,5 @@
 # Zork
-Web-based Zork clone using jQuery....just for fun
+Web-based Zork clone using Javascript....just for fun
 
 So far, I've got a pretty nice looking terminal emulated in the browser. The bottom of the terminal has a text
 input element that listens for the enter key. When the enter key is pressed, the user has submitted a command.
