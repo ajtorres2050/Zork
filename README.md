@@ -1,11 +1,11 @@
 # Zork
-Web-based Zork clone using jQuery....just for fun
+Web-based Zork clone using Javascript....just for fun
 
 So far, I've got a pretty nice looking terminal emulated in the browser. The bottom of the terminal has a text
 input element that listens for the enter key. When the enter key is pressed, the user has submitted a command.
 This causes the program to update the "Moves" variable that's printed at the top of the screen, clear the input
 text box, and push "> user command" to the bottom of the terminal. It also calls the parseCommand function, passing
-the user input into that function, which is currently empty.
+the user input into that function. The function is starting to act as a dictionary, putting together synonymous commands and calling an appropriate function to handle them. I don't necessarily like the way I'm handling it at the moment, cause it will require hardcoding a lot of complex commands. Ideally, the parse function will read the user input as a string, and splice the string based on spaces, and then handle each part of the command like a sentence.
 
 Next steps:
 - Build "room" objects and a "player" object.
