@@ -5,6 +5,8 @@ $(document).ready(function(){
 	var input = $('input');
 	var output = $('.commandline'); // For output, use output.before();
 
+	// ======================== Items ========================
+
 	var mailbox = {
 		desc: "small mailbox"
 	};
@@ -13,12 +15,72 @@ $(document).ready(function(){
 		specialdesc: "A rubber mat saying 'Welcome to Zork!' lies by the door."
 	};
 
-	var westOfHouse = {
-		look: "This is an open field west of a white house, with a boarded front door.",
-		name: "West of House",
-		items: [mailbox, mat],
-		visited: true
-	}
+	// ======================== Rooms ========================
+	
+
+	var Rooms = function(name, look, items) {
+		this.name = name;
+		this.look = look;
+		this.items = items;
+		this.visited = false;
+	};
+
+	Rooms.prototype.addExit = function(direction, exit) {
+		
+		switch(direction){
+
+			case "north":
+				this.north = exit;
+				break;
+
+			case "northeast":
+				this.northeast = exit;
+				break;
+
+			case "east":
+				this.east = exit;
+				break;
+
+			case "southeast":
+				this.southeast = exit;
+				break;
+
+			case "south":
+				this.south = exit;
+				break;
+
+			case "southwest":
+				this.southwest = exit;
+				break;
+
+			case "west":
+				this.west = exit;
+				break;
+
+			case "northwest":
+				this.northwest = exit;
+				break;
+
+			case "up":
+				this.up = exit;
+				break;
+
+			case "down":
+				this.down = exit;
+				break;
+		}
+	};
+
+	var testRoom = new Rooms("Test Room", "Test room.", []);
+
+	var westOfHouse = new Rooms("West of House", "This is an open field west of a white house, with a boarded front door.", [mailbox, mat]);
+
+	westOfHouse.addExit("north", testRoom);
+	testRoom.addExit("south", westOfHouse);
+
+	
+
+	// ======================= Player ========================
 
 	var player = {
 		inventory: [],
@@ -26,6 +88,8 @@ $(document).ready(function(){
 	};
 
 	var room = player.location;
+
+	// ======================== Commands ========================
 
 	function invalidCommand() {
 		output.before("That's not a verb I recognize.<br />");
@@ -35,7 +99,7 @@ $(document).ready(function(){
 		var itemlist = [];
 
 		output.before("<strong>" + room.name + "</strong><br />")
-		output.before(room.look + "<br />");
+		output.before(room.look + "<br /><br />");
 
 		for (var i = 0; i < room.items.length; i++) {
 			if (room.items[i].specialdesc) {
@@ -63,80 +127,79 @@ $(document).ready(function(){
 		}
 	}
 
-	function goNorth() {
+	function go(direction) {
 
-	}
 
-	function goSouth() {
+		// If player typed "go -direction-", this function receives an array
+		// as a parameter. The item at the array index 1 should be the direction
+		// entered. This function will recursively call itself, passing that
+		// direction as a parameter.
 
-	}
+		if (Array.isArray(direction)){
 
-	function goEast() {
+			// If the array has length of 1, the player didn't specify a direction
+			if (direction.length == 1) {
+				output.before("Which direction?<br /><br />");
+			}
+			else {
+				go(direction[1]);
+			}
+		}
 
-	}
+		else {
 
-	function goWest() {
+			if (room[direction] === undefined) {
+				output.before("You can't go that way.<br /><br />");
+			}
 
-	}
-
-	function goUp() {
-
-	}
-
-	function goDown() {
+			else {
+				player.location = room[direction];
+				room = player.location;
+				look();
+			}
+		}
 
 	}
 
 	function parseCommand(command){
 
 		command = command.toLowerCase();
+		command = command.split(" ");
 
-		switch(command) {
+		switch(command[0]) {
 
 			case "go":
-				output.before("Which direction?<br />");
+				go(command);
 				break;
 
 			case "north":
 			case "n":
-			case "go north":
-			case "go n":
-				goNorth();
+				go("north");
 				break;
 
 			case "south":
 			case "s":
-			case "go south":
-			case "go s":
-				goSouth();
+				go("south");
 				break;
 
 			case "east":
 			case "e":
-			case "go east":
-			case "go e":
-				goEast();
+				go("east");
 				break;
 
 			case "west":
 			case "w":
-			case "go west":
-			case "go w":
-				goWest();
+				go("west");
 				break;
 
 			case "up":
 			case "u":
-			case "go up":
-			case "go u":
-				goUp();
+				go("up");
 				break;
 
 			case "down":
 			case "d":
-			case "go down":
-			case "go d":
-				goUp();
+				go("down");
 				break;
 
 			case "look":
