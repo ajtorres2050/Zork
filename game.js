@@ -4,6 +4,7 @@ $(document).ready(function(){
 	var score = 0;
 	var input = $('input');
 	var output = $('.commandline'); // For output, use output.before();
+	var verbose = false;
 
 	// ======================== Items ========================
 
@@ -76,6 +77,8 @@ $(document).ready(function(){
 	var westOfHouse = new Rooms("West of House", "This is an open field west of a white house, with a boarded front door.", [mailbox, mat]);
 
 	westOfHouse.addExit("north", testRoom);
+	westOfHouse.visited = true;
+
 	testRoom.addExit("south", westOfHouse);
 
 	
@@ -95,11 +98,18 @@ $(document).ready(function(){
 		output.before("That's not a verb I recognize.<br />");
 	}
 
-	function look() {
-		var itemlist = [];
+	function brief() {
+		verbose = false;
+		output.before("ZORK is now in its normal \"brief\" printing mode, which gives long descriptions of places never before visited, and short descriptions otherwise.<br /><br />");
+	}
 
-		output.before("<strong>" + room.name + "</strong><br />")
-		output.before(room.look + "<br /><br />");
+	function verboseOn() {
+		verbose = true;
+		output.before("ZORK is now in its \"verbose\" mode, which always gives long descriptions of locations (even if you've been there before).<br /><br />");
+	}
+
+	function showItems() {
+		var itemlist = [];
 
 		for (var i = 0; i < room.items.length; i++) {
 			if (room.items[i].specialdesc) {
@@ -111,7 +121,7 @@ $(document).ready(function(){
 		}
 
 		if (itemlist.length === 1) {
-			output.before("There is a " + itemlist[0] + " here.<br />");
+			output.before("There is a " + itemlist[0] + " here.<br /><br />");
 		}
 		else if (itemlist.length > 1) {
 			var str = "";
@@ -123,8 +133,17 @@ $(document).ready(function(){
 					str.concat(itemlist[i] + ", ");
 				}
 			}
-			output.before("There is a " + str + " here.<br />");
+			output.before("There is a " + str + " here.<br /><br />");
 		}
+
+	}
+
+	function look() {
+
+		output.before("<strong>" + room.name + "</strong><br />")
+		output.before(room.look + "<br /><br />");
+
+		showItems();
 	}
 
 	function go(direction) {
@@ -155,7 +174,22 @@ $(document).ready(function(){
 			else {
 				player.location = room[direction];
 				room = player.location;
-				look();
+
+				if (!verbose){
+					if (room.visited) {
+						output.before("<strong>" + room.name + "</strong><br /><br />");
+						showItems();
+					}
+					else {
+						look();
+						room.visited = true;
+					}
+				}
+
+				else {
+					look();
+					room.visited = true;
+				}
 			}
 		}
 
@@ -205,6 +239,14 @@ $(document).ready(function(){
 			case "look":
 			case "l":
 				look();
+				break;
+
+			case "brief":
+				brief();
+				break;
+
+			case "verbose":
+				verboseOn();
 				break;
 
 			default:
