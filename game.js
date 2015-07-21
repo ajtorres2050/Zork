@@ -1,5 +1,11 @@
 $(document).ready(function(){
 
+
+	function scrollDown() {
+		var objDiv = document.getElementById("content");
+		objDiv.scrollTop = objDiv.scrollHeight;
+	}
+
 	var moves = 0;
 	var score = 0;
 	var input = $('input');
@@ -96,16 +102,19 @@ $(document).ready(function(){
 
 	function invalidCommand() {
 		output.before("That's not a verb I recognize.<br />");
+		scrollDown();
 	}
 
 	function brief() {
 		verbose = false;
 		output.before("ZORK is now in its normal \"brief\" printing mode, which gives long descriptions of places never before visited, and short descriptions otherwise.<br /><br />");
+		scrollDown();
 	}
 
 	function verboseOn() {
 		verbose = true;
 		output.before("ZORK is now in its \"verbose\" mode, which always gives long descriptions of locations (even if you've been there before).<br /><br />");
+		scrollDown();
 	}
 
 	function showItems() {
@@ -136,6 +145,8 @@ $(document).ready(function(){
 			output.before("There is a " + str + " here.<br /><br />");
 		}
 
+		scrollDown();
+
 	}
 
 	function look() {
@@ -144,6 +155,7 @@ $(document).ready(function(){
 		output.before(room.look + "<br /><br />");
 
 		showItems();
+		scrollDown();
 	}
 
 	function go(direction) {
@@ -192,6 +204,8 @@ $(document).ready(function(){
 				}
 			}
 		}
+
+		scrollDown();
 
 	}
 
